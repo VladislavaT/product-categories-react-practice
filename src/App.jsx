@@ -1,18 +1,24 @@
 import React from 'react';
 import './App.scss';
+import cn from 'classnames';
 
-/*
 import usersFromServer from './api/users';
 import categoriesFromServer from './api/categories';
 import productsFromServer from './api/products';
 
 const products = productsFromServer.map((product) => {
-  const category = null; // find by product.categoryId
-  const user = null; // find by category.ownerId
+  const productCategory = categoriesFromServer
+    .find(category => category.id === product.categoryId); // find by product.categoryId
+  const userProducts = usersFromServer
+    .find(user => user.id === productCategory.ownerId); // find by category.ownerId
 
-  return null;
+  return {
+    ...product,
+    category: productCategory,
+    user: userProducts,
+  };
 });
-*/
+
 export const App = () => (
   <div className="section">
     <div className="container">
@@ -168,68 +174,33 @@ export const App = () => (
           </thead>
 
           <tbody>
-            <tr data-cy="Product">
-              <td className="has-text-weight-bold" data-cy="ProductId">
-                1
-              </td>
+            {products.map(product => (
+              <tr data-cy="Product" key={product.id}>
+                <td className="has-text-weight-bold" data-cy="ProductId">
+                  {product.category.id}
+                </td>
 
-              <td data-cy="ProductName">Milk</td>
-              <td data-cy="ProductCategory">
-                <span
-                  role="img"
-                  aria-label="drinks"
+                <td data-cy="ProductName">
+                  {product.name}
+                </td>
+                <td data-cy="ProductCategory">
+                  <span role="img" aria-label="drinks">
+                    {product.category.icon}
+                  </span>
+                  {product.category.title}
+                </td>
+
+                <td
+                  data-cy="ProductUser"
+                  className={cn(
+                    { 'has-text-link': product.user.sex === 'm' },
+                    { 'has-text-danger': product.user.sex === 'f' },
+                  )}
                 >
-                  🍺
-                </span>
-                - Drinks
-              </td>
-
-              <td data-cy="ProductUser" className="has-text-link">
-                Max
-              </td>
-            </tr>
-
-            <tr data-cy="Product">
-              <td className="has-text-weight-bold" data-cy="ProductId">
-                2
-              </td>
-
-              <td data-cy="ProductName">Bread</td>
-              <td data-cy="ProductCategory">
-                <span
-                  role="img"
-                  aria-label="grocery"
-                >
-                  🍞
-                </span>
-                - Grocery
-              </td>
-
-              <td data-cy="ProductUser" className="has-text-danger">
-                Anna
-              </td>
-            </tr>
-
-            <tr data-cy="Product">
-              <td className="has-text-weight-bold" data-cy="ProductId">
-                3
-              </td>
-
-              <td data-cy="ProductName">iPhone</td>
-              <td data-cy="ProductCategory">
-                <span
-                  role="img"
-                  aria-label="electronics"
-                >
-                  💻
-                </span>
-                - Electronics
-              </td>
-
-              <td data-cy="ProductUser" className="has-text-link">
-                Roma
-              </td>
-            </tr>
+                  {product.user.name}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

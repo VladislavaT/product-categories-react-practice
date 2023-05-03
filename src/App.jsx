@@ -144,7 +144,7 @@ export const App = () => {
             </p>
           )}
 
-          {visibleProducts && (
+          {visibleProducts.length > 0 && (
             <table
               data-cy="ProductTable"
               className="table is-striped is-narrow is-fullwidth"

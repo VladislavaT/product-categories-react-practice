@@ -21,12 +21,14 @@ const products = productsFromServer.map((product) => {
 
 export const App = () => {
   const [filteredUserId, setFilteredUserId] = useState(null);
-  const visibleProducts = products.filter((product) => {
-    if (filteredUserId !== null) {
-      return product.user.id === filteredUserId;
-    }
+  const [filteredName, setFilteredName] = useState('');
 
-    return true;
+  const visibleProducts = products.filter(({ user, name }) => {
+    const userIdMatch = filteredUserId === null || user.id === filteredUserId;
+    const nameMatch = !filteredName || name
+      .toLowerCase().includes(filteredName.toLowerCase());
+
+    return userIdMatch && nameMatch;
   });
 
   return (
@@ -74,21 +76,25 @@ export const App = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  value={filteredName}
+                  onChange={event => setFilteredName(event.target.value)}
                 />
 
                 <span className="icon is-left">
                   <i className="fas fa-search" aria-hidden="true" />
                 </span>
 
-                <span className="icon is-right">
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <button
-                    data-cy="ClearButton"
-                    type="button"
-                    className="delete"
-                  />
-                </span>
+                {filteredName && (
+                  <span className="icon is-right">
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <button
+                      data-cy="ClearButton"
+                      type="button"
+                      className="delete"
+                      onClick={() => setFilteredName('')}
+                    />
+                  </span>
+                )}
               </p>
             </div>
 

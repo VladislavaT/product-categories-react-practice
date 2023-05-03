@@ -31,6 +31,11 @@ export const App = () => {
     return userIdMatch && nameMatch;
   });
 
+  const resetHandler = () => {
+    setFilteredUserId(null);
+    setFilteredName('');
+  };
+
   return (
     <div className="section">
       <div className="container">
@@ -136,6 +141,7 @@ export const App = () => {
                 data-cy="ResetAllButton"
                 href="#/"
                 className="button is-link is-outlined is-fullwidth"
+                onClick={resetHandler}
               >
                 Reset all filters
               </a>

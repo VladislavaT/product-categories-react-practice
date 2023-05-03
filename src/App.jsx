@@ -217,12 +217,8 @@ export const App = () => {
                     </td>
 
                     <td data-cy="ProductName">{name}</td>
-                    <td data-cy="ProductCategory">
-                      <span role="img" aria-label="drinks">
-                        {category.icon}
-                      </span>
-                      {category.title}
-                    </td>
+                    {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                    <td data-cy="ProductCategory">{`${category.icon} - ${category.title}`}</td>
 
                     <td
                       data-cy="ProductUser"
